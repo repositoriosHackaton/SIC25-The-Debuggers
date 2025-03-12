@@ -27,6 +27,48 @@
       display: flex;
       flex-direction: column;
     }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 50%;
+        max-width: 600px;
+        text-align: center;
+        position: relative;
+        max-height: 95vh;
+        overflow-y: auto;
+    }
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .ecg-example {
+        margin-top: 15px;
+    }
+
+    .ecg-example img {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
     .chat-container {
       flex-grow: 1;
       display: flex;
@@ -237,6 +279,48 @@
         </nav>
       </div>
     </header>
+    <button id="openModal" style="padding: 10px 20px; background: #023974; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      📊 Ver ejemplos de ECG
+    </button>
+    
+    <div id="ecgModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Ejemplos de ECG</h2>
+    
+        <div class="ecg-example">
+          <img src="{{ url_for('static', filename='ecg_sano.png') }}" alt="ECG Sano">
+          <p><strong>ECG Normal:</strong>
+            1. Un ritmo cardíaco regular (generalmente entre 60 y 100 latidos por minuto en reposo). ⏱️
+            2. Ondas P, QRS y T con formas y tamaños normales. ✅
+            3. Intervalos de tiempo normales entre las ondas. ✅</p>
+        </div>
+    
+        <div class="ecg-example">
+          <img src="{{ url_for('static', filename='ecg_lps.png') }}" alt="Latido Prematuro Supraventricular">
+          <p><strong>Latido Prematuro Supraventricular:</strong>
+            1. Latido Prematuro: Un latido del corazón que ocurre antes de lo esperado. ⏰
+            2. Supraventricular: Significa que el latido extra se origina en las cámaras superiores del corazón (aurículas) o en el nodo AV, que está por encima de los ventrículos. ⬆️</p>
+        </div>
+
+        <div class="ecg-example">
+            <img src="{{ url_for('static', filename='ecg_cvp.png') }}" alt="Contracción ventricular prematura">
+            <p><strong>Contracción ventricular prematura</strong>
+                1. Ausencia de onda P antes del Complejo QRS: Como el ventrículo se contrae por su cuenta, no hay una señal de las aurículas que lo preceda. ❌⬆️
+                2. Complejo QRS ancho y deforme: El latido ventricular prematuro se ve diferente al latido normal. Es más ancho y con una forma extraña. 〰️
+                3. Pausa compensatoria: Después de la CVP, hay una pausa antes de que el corazón vuelva a su ritmo normal. ⏳ Esto ocurre porque el corazón necesita "resetearse".</p>
+        </div>
+
+        <div class="ecg-example">
+            <img src="{{ url_for('static', filename='ecg_fv.png') }}" alt="Fusión ventricular">
+            <p><strong>Fusión ventricular</strong>
+                1. Ondas P escondidas o deformadas: La onda P, que representa la señal de las aurículas, puede estar metida dentro del complejo QRS (que representa la señal de los ventrículos) o verse diferente de lo normal. Es como si la señal de las aurículas intentara colarse en la señal de los ventrículos. 🕵️‍♀️
+                2. Complejos QRS anchos y raros: El complejo QRS, que normalmente es estrecho, se ve más ancho de lo normal y con una forma extraña. Esto pasa porque los ventrículos no se están contrayendo de la manera correcta. 😲
+                3. Ritmo irregular: El corazón puede latir a un ritmo que no es constante. A veces va más rápido, a veces más lento. 😵‍💫</p>
+        </div>
+    
+      </div>
+    </div>
     <div class="container" style="flex-grow: 1;">
       <div class="chat-container" style="height: 100%;">
         <div class="chat-header">
@@ -245,17 +329,8 @@
         <div class="chat-messages" id="chatMessages">
           <div class="message bot">
             <div class="message-content">
-              ¡Hola! Soy HeartVision, tu asistente médico especializado en electrocardiogramas (ECG). Puedes enviarme preguntas sobre cardiología o subir una imagen de ECG para que la analice. ¿En qué puedo ayudarte hoy?
+              ¡Hola! Soy HeartVision ❤️, tu asistente médico especializado en electrocardiogramas (ECG). Puedes enviarme preguntas sobre cardiología o subir una imagen de ECG para que la analice 📃. ¿En qué puedo ayudarte hoy? 😄
             </div>
-          </div>
-          <div class="legend">
-            <h5>Clasificación de resultados:</h5>
-            <ul>
-              <li><strong>0.0:</strong> El paciente está sano</li>
-              <li><strong>1.0:</strong> Latido prematuro supraventricular</li>
-              <li><strong>2.0:</strong> Contracción ventricular prematura</li>
-              <li><strong>3.0:</strong> Fusión ventricular</li>
-            </ul>
           </div>
           <div class="typing-indicator" id="typingIndicator">
             <div class="message bot">
@@ -420,7 +495,7 @@
                   <i style="font-size: 18px; color: #333;"> (Seguridad del modelo en su respuesta)</i>
                   <span style="font-size: 18px; color: #28a745; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
                   <div class="confidence-bar" style="background: #d1e7dd; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
-                    <div class="confidence-progress" style="background: #0f5132; width: ${response.confidence}%; height: 100%;"></div>
+                    <div class="confidence-progress" style="background: #28a745; width: ${response.confidence}%; height: 100%;"></div>
                   </div>
                 </div>
                 <div style="margin-top: 10px;">  
@@ -428,10 +503,6 @@
                   <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
                     ${formatDescription(response.description)}
                   </p>
-                </div>
-                <div style="margin-top: 10px;">
-                  <strong style="font-size: 18px; color: #333;">🖼 Imagen resaltada:</strong><br>
-                  <img src="${response.highlighted_image}" class="message-image" alt="ECG resaltado">
                 </div>
               </div>
             </div>
@@ -448,7 +519,7 @@
                   <i style="font-size: 18px; color: #333;"> (Seguridad del modelo en su respuesta)</i>
                   <span style="font-size: 18px; color: #28a745; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
                   <div class="confidence-bar" style="background: #d1e7dd; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
-                    <div class="confidence-progress" style="background: #0f5132; width: ${response.confidence_model_1}%; height: 100%;"></div>
+                    <div class="confidence-progress" style="background: #28a745; width: ${response.confidence_model_1}%; height: 100%;"></div>
                   </div>
                 </div>
                 <div style="margin-top: 10px;">  
@@ -471,8 +542,18 @@
                   <i style="font-size: 18px; color: #333;"> (Seguridad del modelo en su respuesta)</i>
                   <span style="font-size: 18px; color: #28a745; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
                   <div class="confidence-bar" style="background: #d1e7dd; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
-                    <div class="confidence-progress" style="background: #0f5132; width: ${response.confidence_model_2}%; height: 100%;"></div>
-                  </div>\n                </div>\n                <div style=\"margin-top: 10px;\">\n                  <strong style=\"font-size: 18px; color: #333;\">❤️ Descripción:</strong>\n                  <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;\">\n                    ${formatDescription(response.description_model_2)}\n                  </p>\n                </div>\n              </div>\n            </div>\n          `);
+                    <div class="confidence-progress" style="background: #28a745; width: ${response.confidence_model_2}%; height: 100%;"></div>
+                  </div>
+                </div>
+            <div style=\"margin-top: 10px;\">
+                <strong style=\"font-size: 18px; color: #333;\">❤️ Descripción:</strong>
+                <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;\">
+                    ${formatDescription(response.description_model_2)}
+                </p>
+            </div>
+        </div>
+        </div>
+        `);
         }
         scrollToBottom();
       }
@@ -480,6 +561,25 @@
       function scrollToBottom() {
         chatMessages.scrollTop(chatMessages[0].scrollHeight);
       }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("ecgModal");
+        const btn = document.getElementById("openModal");
+        const closeBtn = document.querySelector(".close");
+
+        btn.onclick = function () {
+            modal.style.display = "flex";
+        };
+
+        closeBtn.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+            modal.style.display = "none";
+            }
+        };
     });
   </script>
 </body>
