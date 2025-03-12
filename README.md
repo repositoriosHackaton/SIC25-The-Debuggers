@@ -57,6 +57,12 @@ Este proyecto tiene como objetivo desarrollar una solución de inteligencia arti
    ¡Envía la imagen y recibe tu predicción!
 
 ---
+## Precisión
+![Precisión de nuestro modelo](img/precisión_cnn_ecg.png)
+
+![Precisión de modelo preentrenado](img/precisión_cnn_preentrenado.png)
+s
+---
 ## Equipo
 
 <!-- markdownlint-disable MD033 -->
