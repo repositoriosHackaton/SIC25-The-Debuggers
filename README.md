@@ -58,9 +58,9 @@ Este proyecto tiene como objetivo desarrollar una solución de inteligencia arti
 
 ---
 ## Precisión
-![Precisión de nuestro modelo](img/precisión_cnn_ecg.png)
+![Precisión de nuestro modelo](img/precisión_cnn_ecg.PNG)
 
-![Precisión de modelo preentrenado](img/precisión_cnn_preentrenado.png)
+![Precisión de modelo preentrenado](img/precisión_cnn_preentrenado.PNG)
 
 ---
 ## Equipo
