@@ -1,32 +1,96 @@
 # SIC25-The-Debuggers
-# IA para Análisis de Electrocardiogramas (ECG)
+
 ![Python](https://img.shields.io/badge/Code-Python-blue.svg)
-![Jupyter Notebook](https://img.shields.io/badge/Tool-Jupyter%20Notebook-orange.svg)
+
 ![Machine Learning](https://img.shields.io/badge/Technology-Machine%20Learning-yellow.svg)
 ![Artificial Intelligence](https://img.shields.io/badge/Field-Artificial%20Intelligence-brightgreen.svg)
 ![Data Analysis](https://img.shields.io/badge/Focus-Data%20Analysis-red.svg)
 ![Scikit-Learn](https://img.shields.io/badge/Library-Scikit--Learn-ffbb00.svg)
 
+## IA para Análisis de Electrocardiogramas (ECG)
+
 Este proyecto tiene como objetivo desarrollar una solución de inteligencia artificial para el análisis de electrocardiogramas utilizando datos de la **MIT-BIH Arrhythmia Database**. El pipeline del proyecto abarca la conversión de señales ECG a imágenes, la creación de un DataFrame con las etiquetas correspondientes, la división de los datos en conjuntos de entrenamiento y validación, y el entrenamiento de una red neuronal convolucional (CNN) creada desde 0 y el reentrenamiento de la CNN VGG16; esto con el fin de la clasificación de latidos.
 
----
+## **Tecnologías utilizadas**
 
-## ⚙️ Requisitos
+- **TensorFlow & Keras** – Para el desarrollo
+y entrenamiento de los modelos de deep learning.
+- **Python & Pandas** – Para la manipulación y preprocesamiento de los datos.
+- **OpenCV & ImageDataGenerator** – Para la preparación de las imágenes.
+- **Flask/FastAPI** – Para la integración del chatbot.
 
-- Python 3.7 o superior
-- [wfdb](https://github.com/MIT-LCP/wfdb-python)
-- matplotlib
-- numpy
-- pandas
-- scikit-learn
-- tensorflow (o tensorflow-cpu, según tu configuración)
-- flask
-- PIL
-- google.generativeai
+## **Proceso de desarrollo**
 
----
+ **Fuente del dataset:**
+<https://www.kaggle.com/datasets/shayanfazeli/heartbeat/data>
 
-## 🚀 Cómo Empezar
+ **Limpieza de datos**
+![Limpieza de datos](img/Limpieza1.PNG)
+<!-- markdownlint-disable MD036 -->
+ **Manejo excepciones/control errores**
+
+![Manejo1](img/error1.png)
+
+![Manejo2](img/error2.png)
+
+![Manejo3](img/error3.png)
+<!-- markdownlint-disable MD029 -->
+**Estadísticos**
+
+![Reporte](img/Reportes.PNG)
+
+![Matriz de Confusion](img/Matriz_confusión.PNG)
+
+![Matriz de Confusion1](img/matriz_confusion1.png)
+
+![Precision del entranamiento](img/precision_entrenamiento.png)
+
+![Perdida del Entrenamiento](img/perdida_entrenamiento.png)
+
+![Precision Recall](img/precision_recall.png)
+
+![Curva Roc](img/curva_roc.png)
+
+![HeatMap](img/heatmap.png)
+
+## **Arquitectura del Proyecto**
+
+**Diagrama de Alto Nivel**
+![Diagrama de Alto Nivel](img/ArchitectureG.png)
+
+**Diagrama**
+![Diagrama](img/Arquitectura-02.png)
+
+El sistema cuenta con dos modelos que trabajan en conjunto para mejorar la precisión de la clasificación:
+
+1. **Modelo CNN personalizado**
+   - Construido desde cero con capas convolucionales y técnicas de aumento de datos.
+   - Entrenado para reconocer patrones en imágenes de ECG en escala de grises.
+
+2. **Modelo basado en VGG16**
+   - Utiliza transfer learning con la arquitectura VGG16 preentrenada.
+   - Se han ajustado las últimas capas para mejorar la clasificación específica de ECG.
+
+Ambos modelos generan predicciones que luego se combinan para dar un resultado final al usuario.
+
+## Precisión
+
+Los modelos han sido entrenados con un conjunto de datos de más de **12,500 imágenes** y logran una precisión superior al **80%** en validación.
+
+**Precisión de nuestro modelo**
+![Precisión de nuestro modelo](img/precisión_cnn_ecg.PNG)
+
+**Precisión de modelo preentrenado**
+![Precisión de modelo preentrenado](img/precisión_cnn_preentrenado.PNG)
+
+## **Flujo de trabajo**
+
+1. El usuario sube una imagen de un ECG en el chatbot.
+2. La imagen es preprocesada y enviada a ambos modelos.
+3. Se generan predicciones y se combinan para obtener el resultado final.
+4. El chatbot devuelve la clasificación de la imagen.
+
+## **Cómo ejecutar el proyecto**
 
 1. **Clonar el Repositorio:**
 
@@ -43,31 +107,23 @@ Este proyecto tiene como objetivo desarrollar una solución de inteligencia arti
 3. **Iniciar la página web**
 
    Ejecuta el script en la carpeta "ecg_project":
+
    ```bash
    python server.py
    ```
-   Esto iniciará el servidor local, una vez en funcionamiento ingresa a través de tu buscador con:
-   http://127.0.0.1:8000/
+<!-- markdownlint-disable MD034 -->
+   Esto iniciará el servidor local, una vez en funcionamiento ingresa a
+   través de tu buscador con: http://127.0.0.1:8000/
 
-5. **Realizar predicción**
+<!-- markdownlint-disable MD029 -->
+4. **Realizar predicción**
 
    Entra en la sección "chatbot", luego selecciona el botón para subir una imagen y elige la imagen de
    tu preferencia dentro de "data/imagenes_eg/.."
 
    ¡Envía la imagen y recibe tu predicción!
 
----
-## Precisión
-
-**Precisión de nuestro modelo**
-![Precisión de nuestro modelo](img/precisión_cnn_ecg.PNG)
-
-**Precisión de modelo preentrenado**
-![Precisión de modelo preentrenado](img/precisión_cnn_preentrenado.PNG)
-
----
-## Equipo
-
+## **Equipo de Trabajo**
 <!-- markdownlint-disable MD033 -->
 <table>
    <thead>
@@ -128,26 +184,16 @@ Este proyecto tiene como objetivo desarrollar una solución de inteligencia arti
 </table>
 <!-- markdownlint-enable MD033 -->
 
----
-
-## 📌 Nota
+## **Nota**
 
 - Asegúrate de que la estructura de carpetas se mantenga igual para evitar errores en la ejecución de los scripts.
 
----
-
-## 🤝 Contribuciones
+## **Contribuciones y Agradecimientos**
 
 ¡Las contribuciones son bienvenidas! Si tienes sugerencias o mejoras, por favor crea un _pull request_ o abre un _issue_.
 
----
+**¡Gracias por visitar nuestro proyecto! Si tienes alguna pregunta o necesitas asistencia, no dudes en contactar.**
 
-## 📄 Licencia
+## **Licencia**
 
-Este proyecto se distribuye bajo la licencia [MIT](LICENSE).
-
----
-
-¡Gracias por visitar el proyecto! Si tienes alguna pregunta o necesitas asistencia, no dudes en contactar.
-
----
+Este proyecto se distribuye bajo la licencia [MIT](LICENSE)
