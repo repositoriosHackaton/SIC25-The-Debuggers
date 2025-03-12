@@ -474,16 +474,23 @@
             chatMessages.append(`
                 <div class="message bot">
                     <div class="message-content">
-                        <strong>Predicción:</strong><br>
-                        <strong>${response.class_name}</strong><br>
-                        <strong>Confianza promedio: </strong>
-                        <div class="confidence-bar">
-                            <div class="confidence-progress" style="width: ${response.confidence}%"></div>
+                        <p style="font-size: 26px; font-weight: bold; color: #D32F2F; margin: 0 0 10px 0;">
+                            🩺 Predicción:
+                        <span style="text-transform: uppercase;">${response.class_name}</span>
+                        </p>
+                        <div style="margin-bottom: 10px;">
+                            <strong style="font-size: 18px; color: #333;">✅Confianza promedio:</strong>
+                            <span style="font-size: 18px; color: #388E3C; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
+                            <div class="confidence-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
+                                <div class="confidence-progress" style="background: #388E3C; width: ${response.confidence}%; height: 100%;"></div>
+                            </div>
                         </div>
-                        <span>${parseFloat(response.confidence).toFixed(2)}%</span>
-                        <br><br>
-                        <strong>Descripción:</strong><br>
-                        ${formatDescription(response.description)}
+                        <div style="margin-top: 10px;">  
+                            <strong style="font-size: 18px; color: #333;">❤️Descripción:</strong>
+                            <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
+                            ${formatDescription(response.description)}
+                            </p>
+                        </div>
                     </div>
                 </div>
             `);
@@ -491,26 +498,46 @@
             chatMessages.append(`
                 <div class="message bot">
                     <div class="message-content">
-                        <strong>Predicción modelo 1:</strong><br>
-                        <strong>${response.class_name_model_1}</strong><br>
-                        <strong>Confianza: </strong>
-                        <div class="confidence-bar" style="width: ${response.confidence_model_1}%"></div>
-                        <br><br>
-                        <strong>Descripción:</strong><br>
-                        ${formatDescription(response.description_model_1)}
+                        <p style="font-size: 26px; font-weight: bold; color: #D32F2F; margin: 0 0 10px 0;">
+                            🩺 Predicción:
+                        <span style="text-transform: uppercase;">${response.class_name_model_1}</span>
+                        </p>
+                        <div style="margin-bottom: 10px;">
+                            <strong style="font-size: 18px; color: #333;">✅Confianza promedio:</strong>
+                            <span style="font-size: 18px; color: #388E3C; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
+                            <div class="confidence-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
+                                <div class="confidence-progress" style="background: #388E3C; width: ${response.confidence_model_1}%; height: 100%;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">  
+                            <strong style="font-size: 18px; color: #333;">❤️Descripción:</strong>
+                            <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
+                            ${formatDescription(response.description_model_1)}
+                            </p>
+                        </div>
                     </div>
                 </div>
             `);
             chatMessages.append(`
                 <div class="message bot">
                     <div class="message-content">
-                        <strong>Predicción modelo 2:</strong><br>
-                        <strong>${response.class_name_model_2}</strong><br>
-                        <strong>Confianza: </strong>
-                        <div class="confidence-bar" style="width: ${response.confidence_model_2}%"></div>
-                        <br><br>
-                        <strong>Descripción:</strong><br>
-                        ${formatDescription(response.description_model_2)}
+                        <p style="font-size: 26px; font-weight: bold; color: #D32F2F; margin: 0 0 10px 0;">
+                            🩺 Predicción:
+                        <span style="text-transform: uppercase;">${response.class_name_model_2}</span>
+                        </p>
+                        <div style="margin-bottom: 10px;">
+                            <strong style="font-size: 18px; color: #333;">✅Confianza promedio:</strong>
+                            <span style="font-size: 18px; color: #388E3C; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
+                            <div class="confidence-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
+                                <div class="confidence-progress" style="background: #388E3C; width: ${response.confidence_model_2}%; height: 100%;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">  
+                            <strong style="font-size: 18px; color: #333;">❤️Descripción:</strong>
+                            <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
+                            ${formatDescription(response.description_model_2)}
+                            </p>
+                        </div>
                     </div>
                 </div>
             `);
