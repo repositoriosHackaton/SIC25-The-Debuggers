@@ -1,0 +1,4 @@
+0- Normal 7.000 datos
+1- Supraventricular premature beat 2223 datos
+2- Contracción ventricular prematura 5788 datos
+3- Fusión ventricular y normal 641 datos
