@@ -1,555 +1,486 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot de ECG - Asistente Médico</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .chat-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
-        .chat-header {
-            background-color: #ce3434;
-            color: white;
-            padding: 15px 20px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .chat-header i {
-            margin-right: 10px;
-            font-size: 1.4rem;
-        }
-        
-        .chat-messages {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            max-height: 60vh;
-        }
-        
-        .message {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .message.user {
-            justify-content: flex-end;
-        }
-        
-        .message-content {
-            max-width: 70%;
-            padding: 12px 15px;
-            border-radius: 15px;
-        }
-        
-        .user .message-content {
-            background-color: #ce3434;
-            color: white;
-            border-top-right-radius: 2px;
-        }
-        
-        .bot .message-content {
-            background-color: #f1f0f0;
-            color: #333;
-            border-top-left-radius: 2px;
-        }
-        
-        .message-image {
-            max-width: 300px;
-            margin-top: 10px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-        }
-        .confidence-bar {
-        width: 100%;
-        background-color: #e9ecef;
-        border-radius: 5px;
-        margin-top: 5px;
-        margin-bottom: 15px;
-        position: relative;
-        }
-        .confidence-progress {
-        height: 10px;
-        background-color: #28a745;
-        border-radius: 5px;
-        width: 0%;
-        }
-        .ecg-analysis {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #007bff;
-        }
-        
-        .ecg-analysis h5 {
-            color: #ce3434;
-            margin-bottom: 10px;
-        }
-        
-        .chat-input {
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #eee;
-        }
-        
-        .chat-input form {
-            display: flex;
-            align-items: center;
-        }
-        
-        .chat-input input {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-        
-        .btn-primary {
-            background-color: #ce3434;
-            border-color: #ce3434;
-        }
-        
-        .btn-upload {
-            position: relative;
-            overflow: hidden;
-            margin-right: 10px;
-        }
-        
-        .btn-upload input[type=file] {
-            position: absolute;
-            font-size: 100px;
-            right: 0;
-            top: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-        
-        .typing-indicator {
-            display: none;
-            margin-bottom: 15px;
-        }
-        
-        .typing-bubble {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            margin-right: 3px;
-            border-radius: 50%;
-            background-color: #ce3434;
-            animation: typing-bubble 1s infinite;
-        }
-        
-        .typing-bubble:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-bubble:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes typing-bubble {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        
-        /* Estilos responsivos */
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                height: calc(100vh - 20px);
-            }
-            
-            .message-content {
-                max-width: 85%;
-            }
-        }
-    </style>
-</head>
-<head>
-  <!-- Basic -->
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!-- Mobile Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- Site Metas -->
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
-  <link rel="shortcut icon" href="https://media-public.canva.com/LBTVc/MAFqQwLBTVc/1/tl.png" type="">
-
-  <title> Debbuguers Website IA </title>
-
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}" />
-
-  <!-- fonts style -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-  <!--owl slider stylesheet -->
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
-  <!-- font awesome style -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome.min.css') }}" />
-
-  <!-- Custom styles for this template -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <!-- responsive style -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='responsive.css') }}">
-
-</head>
-
-<body>
-
-    <div class="hero_area">
-      <div class="hero_bg_box">
-        <div class="bg_img_box">
-          <img src="{{ url_for('static', filename='hero-bg.png') }}" alt="">
-        </div>
-      </div>
-  
-      <!-- header section starts -->
-      <header class="header_section">
-        <div class="container-fluid">
-          <nav class="navbar navbar-expand-lg custom_nav-container">
-            <a class="navbar-brand" href="index.html">
-              <span>Debbuguers 🐞</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class=""></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav">
-                <li class="nav-item active">
-                  <a class="nav-link" href="{{ url_for('home') }}">Inicio<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('about') }}">Quienes Somos</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('service') }}">Como Funciona</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('chatbot') }}">ChatBot</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('team') }}">Equipo</a>
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </div>
-      </header>
-      <!-- end header section -->
-  
-      <div class="container">
-          <div class="chat-container">
-              <div class="chat-header">
-                  <i class="fas fa-heartbeat"></i> HeartVision | Asistente Médico de ECG
-              </div>
-              <div class="chat-messages" id="chatMessages">
-                  <div class="message bot">
-                      <div class="message-content">
-                          ¡Hola! Soy HeartVision tu asistente médico especializado en electrocardiogramas (ECG). Puedes enviarme preguntas sobre cardiología o subir una imagen de ECG para que la analice. ¿En qué puedo ayudarte hoy?
-                      </div>
-                  </div>
-                  <div class="legend">
-                    <h5>Clasificación de resultados:</h5>
-                    <ul>
-                        <li><strong>0.0:</strong> El paciente está sano</li>
-                        <li><strong>1.0:</strong> El paciente tiene latido prematuro supraventricular</li>
-                        <li><strong>2.0:</strong> El paciente tiene Contracción ventricular prematura</li>
-                        <li><strong>3.0:</strong> El paciente tiene Fusión ventricular</li>
-                    </ul>
-                </div>
-                  <div class="typing-indicator" id="typingIndicator">
-                      <div class="message bot">
-                          <div class="message-content">
-                              <div class="typing-bubble"></div>
-                              <div class="typing-bubble"></div>
-                              <div class="typing-bubble"></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="chat-input">
-                  <form id="messageForm">
-                      <div class="btn-upload btn btn-secondary">
-                          <i class="fas fa-image"></i>
-                          <input type="file" id="imageUpload" accept="image/*">
-                      </div>
-                      <input type="text" id="messageInput" placeholder="Escribe tu mensaje aquí...">
-                      <button type="submit" class="btn btn-primary">
-                          <i class="fas fa-paper-plane"></i>
-                      </button>
-                  </form>
-              </div>
-          </div>
-      </div>
-      <div class="footer">
-          © 2025 ECG Chatbot | Esta herramienta no reemplaza la opinión de un profesional de la salud
-      </div>
-  
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
-      <script>
-      $(document).ready(function() {
-        const chatMessages = $('#chatMessages');
-        const messageForm = $('#messageForm');
-        const messageInput = $('#messageInput');
-        const imageUpload = $('#imageUpload');
-        const typingIndicator = $('#typingIndicator');
-        
-        let selectedImage = null;
-        
-        
-        function formatDescription(description) {
-            return description
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<br>• $1')
-                .replace(/(?:\r\n|\r|\n)/g, '<br>');
-        }
-        
-        
-        imageUpload.on('change', function(e) {
-            const file = e.target.files[0];
-            
-            if (file) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    selectedImage = e.target.result;
-                    chatMessages.append(`
-                        <div class="message user">
-                            <div class="message-content">
-                                Imagen de ECG seleccionada
-                                <img src="${selectedImage}" class="message-image" alt="ECG seleccionado">
-                            </div>
-                        </div>
-                    `);
-                    scrollToBottom();
-                };
-                
-                reader.readAsDataURL(file);
-            }
-        });
-        
-        
-        messageForm.on('submit', function(e) {
-            e.preventDefault();
-            
-            const mensaje = messageInput.val().trim();
-            
-            const formData = new FormData();
-            
-            if (mensaje) {
-                formData.append('mensaje', mensaje);
-            }
-            
-            
-            if (imageUpload[0].files[0]) {
-                formData.append('image', imageUpload[0].files[0]);
-            }
-            
-            if (!mensaje && !imageUpload[0].files[0]) {
-                return;
-            }
-            
-            typingIndicator.css('display', 'block');
-            scrollToBottom();
-            
-            appendUserMessage(mensaje);
-            
-            messageInput.val('');
-            
-            if (imageUpload[0].files[0]) {
-                $.ajax({
-                    url: '/predict',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        typingIndicator.css('display', 'none');
-                        handlePredictionResponse(response);
-                    },
-                    error: function(xhr, status, error) {
-                        typingIndicator.css('display', 'none');
-                        let errorMessage = xhr.responseJSON ? xhr.responseJSON.error : "Lo siento, ha ocurrido un error desconocido.";
-                        appendBotMessage({ texto: errorMessage });
-                    }
-                });
-            } else if (mensaje) {
-                $.ajax({
-                    url: '/chatbot',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ text: mensaje }),
-                    success: function(response) {
-                        typingIndicator.css('display', 'none');
-                        appendBotMessage({
-                            texto: `<strong>Respuesta de Gemini:</strong><br>${formatDescription(response.gemini_response)}`
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        typingIndicator.css('display', 'none');
-                        let errorMessage = xhr.responseJSON ? xhr.responseJSON.error : "Lo siento, ha ocurrido un error desconocido.";
-                        appendBotMessage({ texto: errorMessage });
-                    }
-                });
-            }
-        });
-        
-        function appendUserMessage(message) {
-            chatMessages.append(`
-                <div class="message user">
-                    <div class="message-content">${message}</div>
-                </div>
-            `);
-            scrollToBottom();
-        }
-        
-        function appendBotMessage(response) {
-            let messageHtml = `
-                <div class="message bot">
-                    <div class="message-content">
-                        ${response.texto}
-            `;
-            messageHtml += `</div></div>`;
-            chatMessages.append(messageHtml);
-            scrollToBottom();
-        }
-        
-        function handlePredictionResponse(response) {
-        function formatDescription(description) {
-            return description
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<br>• $1')
-                .replace(/(?:\r\n|\r|\n)/g, '<br>');
-        }
-
-        if (response.prediction !== undefined) {
-            chatMessages.append(`
-                <div class="message bot">
-                    <div class="message-content">
-                        <p style="font-size: 26px; font-weight: bold; color: #D32F2F; margin: 0 0 10px 0;">
-                            🩺 Predicción:
-                        <span style="text-transform: uppercase;">${response.class_name}</span>
-                        </p>
-                        <div style="margin-bottom: 10px;">
-                            <strong style="font-size: 18px; color: #333;">✅Confianza promedio:</strong>
-                            <span style="font-size: 18px; color: #388E3C; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
-                            <div class="confidence-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
-                                <div class="confidence-progress" style="background: #388E3C; width: ${response.confidence}%; height: 100%;"></div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">  
-                            <strong style="font-size: 18px; color: #333;">❤️Descripción:</strong>
-                            <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
-                            ${formatDescription(response.description)}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `);
-        } else {
-            chatMessages.append(`
-                <div class="message bot">
-                    <div class="message-content">
-                        <p style="font-size: 26px; font-weight: bold; color: #D32F2F; margin: 0 0 10px 0;">
-                            🩺 Predicción:
-                        <span style="text-transform: uppercase;">${response.class_name_model_1}</span>
-                        </p>
-                        <div style="margin-bottom: 10px;">
-                            <strong style="font-size: 18px; color: #333;">✅Confianza promedio:</strong>
-                            <span style="font-size: 18px; color: #388E3C; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
-                            <div class="confidence-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
-                                <div class="confidence-progress" style="background: #388E3C; width: ${response.confidence_model_1}%; height: 100%;"></div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">  
-                            <strong style="font-size: 18px; color: #333;">❤️Descripción:</strong>
-                            <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
-                            ${formatDescription(response.description_model_1)}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `);
-            chatMessages.append(`
-                <div class="message bot">
-                    <div class="message-content">
-                        <p style="font-size: 26px; font-weight: bold; color: #D32F2F; margin: 0 0 10px 0;">
-                            🩺 Predicción:
-                        <span style="text-transform: uppercase;">${response.class_name_model_2}</span>
-                        </p>
-                        <div style="margin-bottom: 10px;">
-                            <strong style="font-size: 18px; color: #333;">✅Confianza promedio:</strong>
-                            <span style="font-size: 18px; color: #388E3C; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
-                            <div class="confidence-bar" style="background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
-                                <div class="confidence-progress" style="background: #388E3C; width: ${response.confidence_model_2}%; height: 100%;"></div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">  
-                            <strong style="font-size: 18px; color: #333;">❤️Descripción:</strong>
-                            <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
-                            ${formatDescription(response.description_model_2)}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `);
-        }
-
-        scrollToBottom();
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot de ECG - Asistente Médico</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
     }
-        
-        function scrollToBottom() {
-            chatMessages.scrollTop(chatMessages[0].scrollHeight);
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e8f0fe;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .chat-header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 15px 20px;
+      font-weight: bold;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+    }
+    .chat-header i {
+      margin-right: 10px;
+      font-size: 1.6rem;
+    }
+    .chat-messages {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #f1f8ff;
+    }
+    .message {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+    }
+    .message.user {
+      justify-content: flex-end;
+    }
+    .message-content {
+      max-width: 70%;
+      padding: 12px 15px;
+      border-radius: 15px;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .user .message-content {
+      background-color: #28a745;
+      color: #fff;
+      border-top-right-radius: 2px;
+    }
+    .bot .message-content {
+      background-color: #e9f0fb;
+      color: #333;
+      border-top-left-radius: 2px;
+    }
+    .message-image {
+      max-width: 300px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+    .confidence-bar {
+      width: 100%;
+      background-color: #d1e7dd;
+      border-radius: 5px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    .confidence-progress {
+      height: 10px;
+      background-color: #0f5132;
+      border-radius: 5px;
+      width: 0%;
+    }
+    .ecg-analysis {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #007bff;
+    }
+    .ecg-analysis h5 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+    .chat-input {
+      padding: 15px;
+      background-color: #f1f8ff;
+      border-top: 1px solid #eee;
+    }
+    .chat-input form {
+      display: flex;
+      align-items: center;
+    }
+    .chat-input input {
+      flex-grow: 1;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 30px;
+      margin-right: 10px;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-upload {
+      position: relative;
+      overflow: hidden;
+      margin-right: 10px;
+    }
+    .btn-upload input[type=file] {
+      position: absolute;
+      font-size: 100px;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .typing-indicator {
+      display: none;
+      margin-bottom: 15px;
+    }
+    .typing-bubble {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 3px;
+      border-radius: 50%;
+      background-color: #007bff;
+      animation: typing-bubble 1s infinite;
+    }
+    .typing-bubble:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .typing-bubble:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes typing-bubble {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #6c757d;
+      font-size: 0.9rem;
+      background-color: #f1f8ff;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      .message-content {
+        max-width: 85%;
+      }
+    }
+  </style>
+  <!-- Bootstrap, FontAwesome y otros estilos externos -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='responsive.css') }}" />
+</head>
+<body>
+  <div class="hero_area" style="flex-grow: 1; display: flex; flex-direction: column;">
+    <div class="hero_bg_box">
+      <div class="bg_img_box">
+        <img src="{{ url_for('static', filename='hero-bg.png') }}" alt="" style="width:100%; height:auto;">
+      </div>
+    </div>
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index.html">
+            <span>Debbuguers 🐞</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('home') }}">Inicio<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('about') }}">Quienes Somos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('service') }}">Como Funciona</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('chatbot') }}">ChatBot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('team') }}">Equipo</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <div class="container" style="flex-grow: 1;">
+      <div class="chat-container" style="height: 100%;">
+        <div class="chat-header">
+          <i class="fas fa-heartbeat"></i> HeartVision | Asistente Médico de ECG
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot">
+            <div class="message-content">
+              ¡Hola! Soy HeartVision, tu asistente médico especializado en electrocardiogramas (ECG). Puedes enviarme preguntas sobre cardiología o subir una imagen de ECG para que la analice. ¿En qué puedo ayudarte hoy?
+            </div>
+          </div>
+          <div class="legend">
+            <h5>Clasificación de resultados:</h5>
+            <ul>
+              <li><strong>0.0:</strong> El paciente está sano</li>
+              <li><strong>1.0:</strong> Latido prematuro supraventricular</li>
+              <li><strong>2.0:</strong> Contracción ventricular prematura</li>
+              <li><strong>3.0:</strong> Fusión ventricular</li>
+            </ul>
+          </div>
+          <div class="typing-indicator" id="typingIndicator">
+            <div class="message bot">
+              <div class="message-content">
+                <div class="typing-bubble"></div>
+                <div class="typing-bubble"></div>
+                <div class="typing-bubble"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input">
+          <form id="messageForm">
+            <div class="btn-upload btn btn-secondary">
+              <i class="fas fa-image"></i>
+              <input type="file" id="imageUpload" accept="image/*">
+            </div>
+            <input type="text" id="messageInput" placeholder="Escribe tu mensaje aquí...">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      © 2025 ECG Chatbot | Esta herramienta no reemplaza la opinión de un profesional de la salud
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      const chatMessages = $('#chatMessages');
+      const messageForm = $('#messageForm');
+      const messageInput = $('#messageInput');
+      const imageUpload = $('#imageUpload');
+      const typingIndicator = $('#typingIndicator');
+      
+      let selectedImage = null;
+      
+      function formatDescription(description) {
+        return description
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<br>• $1')
+          .replace(/(?:\r\n|\r|\n)/g, '<br>');
+      }
+      
+      imageUpload.on('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            selectedImage = e.target.result;
+            chatMessages.append(`
+              <div class="message user">
+                <div class="message-content">
+                  Imagen de ECG seleccionada
+                  <img src="${selectedImage}" class="message-image" alt="ECG seleccionado">
+                </div>
+              </div>
+            `);
+            scrollToBottom();
+          };
+          reader.readAsDataURL(file);
         }
-    });    
-    </script>
-  </body>
+      });
+      
+      messageForm.on('submit', function(e) {
+        e.preventDefault();
+        const mensaje = messageInput.val().trim();
+        const formData = new FormData();
+        if (mensaje) {
+          formData.append('mensaje', mensaje);
+        }
+        if (imageUpload[0].files[0]) {
+          formData.append('image', imageUpload[0].files[0]);
+        }
+        if (!mensaje && !imageUpload[0].files[0]) {
+          return;
+        }
+        typingIndicator.css('display', 'block');
+        scrollToBottom();
+        appendUserMessage(mensaje);
+        messageInput.val('');
+        
+        if (imageUpload[0].files[0]) {
+          $.ajax({
+            url: '/predict',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              typingIndicator.css('display', 'none');
+              handlePredictionResponse(response);
+            },
+            error: function(xhr) {
+              typingIndicator.css('display', 'none');
+              let errorMessage = xhr.responseJSON ? xhr.responseJSON.error : "Lo siento, ha ocurrido un error desconocido.";
+              appendBotMessage({ texto: errorMessage });
+            }
+          });
+        } else if (mensaje) {
+          $.ajax({
+            url: '/chatbot',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ text: mensaje }),
+            success: function(response) {
+              typingIndicator.css('display', 'none');
+              appendBotMessage({
+                texto: `<strong>Respuesta de Gemini:</strong><br>${formatDescription(response.gemini_response)}`
+              });
+            },
+            error: function(xhr) {
+              typingIndicator.css('display', 'none');
+              let errorMessage = xhr.responseJSON ? xhr.responseJSON.error : "Lo siento, ha ocurrido un error desconocido.";
+              appendBotMessage({ texto: errorMessage });
+            }
+          });
+        }
+      });
+      
+      function appendUserMessage(message) {
+        chatMessages.append(`
+          <div class="message user">
+            <div class="message-content">${message}</div>
+          </div>
+        `);
+        scrollToBottom();
+      }
+      
+      function appendBotMessage(response) {
+        let messageHtml = `
+          <div class="message bot">
+            <div class="message-content">
+              ${response.texto}
+            </div>
+          </div>
+        `;
+        chatMessages.append(messageHtml);
+        scrollToBottom();
+      }
+      
+      function handlePredictionResponse(response) {
+        function formatDescription(description) {
+          return description
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<br>• $1')
+            .replace(/(?:\r\n|\r|\n)/g, '<br>');
+        }
+        
+        if (response.prediction !== undefined) {
+          chatMessages.append(`
+            <div class="message bot">
+              <div class="message-content">
+                <p style="font-size: 26px; font-weight: bold; color: #007bff; margin: 0 0 10px 0;">
+                  🩺 Predicción: <span style="text-transform: uppercase;">${response.class_name}</span>
+                </p>
+                <div style="margin-bottom: 10px;">
+                  <strong style="font-size: 18px; color: #333;">✅ Confianza promedio:</strong>
+                  <i style="font-size: 18px; color: #333;"> (Seguridad del modelo en su respuesta)</i>
+                  <span style="font-size: 18px; color: #28a745; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
+                  <div class="confidence-bar" style="background: #d1e7dd; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
+                    <div class="confidence-progress" style="background: #0f5132; width: ${response.confidence}%; height: 100%;"></div>
+                  </div>
+                </div>
+                <div style="margin-top: 10px;">  
+                  <strong style="font-size: 18px; color: #333;">❤️ Descripción:</strong>
+                  <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
+                    ${formatDescription(response.description)}
+                  </p>
+                </div>
+                <div style="margin-top: 10px;">
+                  <strong style="font-size: 18px; color: #333;">🖼 Imagen resaltada:</strong><br>
+                  <img src="${response.highlighted_image}" class="message-image" alt="ECG resaltado">
+                </div>
+              </div>
+            </div>
+          `);
+        } else {
+          chatMessages.append(`
+            <div class="message bot">
+              <div class="message-content">
+                <p style="font-size: 26px; font-weight: bold; color: #007bff; margin: 0 0 10px 0;">
+                  🩺 Predicción: <span style="text-transform: uppercase;">${response.class_name_model_1}</span>
+                </p>
+                <div style="margin-bottom: 10px;">
+                  <strong style="font-size: 18px; color: #333;">✅ Confianza promedio:</strong>
+                  <i style="font-size: 18px; color: #333;"> (Seguridad del modelo en su respuesta)</i>
+                  <span style="font-size: 18px; color: #28a745; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
+                  <div class="confidence-bar" style="background: #d1e7dd; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
+                    <div class="confidence-progress" style="background: #0f5132; width: ${response.confidence_model_1}%; height: 100%;"></div>
+                  </div>
+                </div>
+                <div style="margin-top: 10px;">  
+                  <strong style="font-size: 18px; color: #333;">❤️ Descripción:</strong>
+                  <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;">
+                    ${formatDescription(response.description_model_1)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          `);
+          chatMessages.append(`
+            <div class="message bot">
+              <div class="message-content">
+                <p style="font-size: 26px; font-weight: bold; color: #007bff; margin: 0 0 10px 0;">
+                  🩺 Predicción: <span style="text-transform: uppercase;">${response.class_name_model_2}</span>
+                </p>
+                <div style="margin-bottom: 10px;">
+                  <strong style="font-size: 18px; color: #333;">✅ Confianza promedio:</strong>
+                  <i style="font-size: 18px; color: #333;"> (Seguridad del modelo en su respuesta)</i>
+                  <span style="font-size: 18px; color: #28a745; margin-left: 5px;">${parseFloat(response.confidence).toFixed(2)}%</span>
+                  <div class="confidence-bar" style="background: #d1e7dd; border-radius: 5px; overflow: hidden; margin-top: 5px; height: 20px;">
+                    <div class="confidence-progress" style="background: #0f5132; width: ${response.confidence_model_2}%; height: 100%;"></div>
+                  </div>\n                </div>\n                <div style=\"margin-top: 10px;\">\n                  <strong style=\"font-size: 18px; color: #333;\">❤️ Descripción:</strong>\n                  <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin-top: 5px;\">\n                    ${formatDescription(response.description_model_2)}\n                  </p>\n                </div>\n              </div>\n            </div>\n          `);
+        }
+        scrollToBottom();
+      }
+      
+      function scrollToBottom() {
+        chatMessages.scrollTop(chatMessages[0].scrollHeight);
+      }
+    });
+  </script>
+</body>
 </html>

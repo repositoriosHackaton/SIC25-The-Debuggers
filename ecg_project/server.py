@@ -50,7 +50,7 @@ def preprocess_image_rgb(image):
 def get_gemini_description(class_name):
     try:
         model = genai.GenerativeModel('models/gemini-2.0-flash')
-        response = model.generate_content(f"{class_name}, explica como es un electrocardiograma de este tipo para una persona que no sabe nada al respecto y que es esta enfermedad de forma sencilla y entendible.")
+        response = model.generate_content(f"{class_name}, explica como es un electrocardiograma de este tipo para una persona que no sabe nada al respecto y que es esta enfermedad de forma sencilla y entendible, usa emojis.")
         return response.text if response else "No se pudo obtener la descripción."
     except Exception as e:
         return f"Error al obtener descripción: {str(e)}"
