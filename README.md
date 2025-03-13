@@ -41,13 +41,9 @@ y entrenamiento de los modelos de deep learning.
 
 ![Matriz de Confusion](img/Matriz_confusión.PNG)
 
-![Matriz de Confusion1](img/matriz_confusion1.png)
 
 ![Perdida del Entrenamiento](img/perdida_entrenamiento.png)
 
-![Precision Recall](img/precision_recall.png)
-
-![Curva Roc](img/curva_roc.png)
 
 ## **Arquitectura del Proyecto**
 
