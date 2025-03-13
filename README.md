@@ -49,8 +49,6 @@ y entrenamiento de los modelos de deep learning.
 
 ![Curva Roc](img/curva_roc.png)
 
-![HeatMap](img/heatmap.png)
-
 ## **Arquitectura del Proyecto**
 
 **Diagrama de Alto Nivel**
